@@ -1,6 +1,6 @@
 {
     "name": "keystrok",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A modern, TypeScript-native keyboard shortcut library that works for everyone — including international keyboard layouts.",
     "keywords": [
         "keyboard",
@@ -21,7 +21,8 @@
     },
     "files": [
         "dist",
-        "src"
+        "src",
+        "README.md"
     ],
     "scripts": {
         "build": "bun build ./src/index.ts --outdir ./dist --target browser && tsc --emitDeclarationOnly --declaration --outDir ./dist",

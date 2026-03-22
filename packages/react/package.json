@@ -1,6 +1,6 @@
 {
     "name": "keystrok-react",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "React bindings for keystrok — useKeystrok() hook and KeystrokScope component.",
     "keywords": [
         "keyboard",
@@ -22,7 +22,8 @@
     },
     "files": [
         "dist",
-        "src"
+        "src",
+        "README.md"
     ],
     "scripts": {
         "build": "bun build ./src/index.ts --outdir ./dist --target browser",
@@ -35,7 +36,7 @@
         "react-dom": "^18.0.0"
     },
     "dependencies": {
-        "keystrok": "workspace:*"
+        "keystrok": "^0.1.1"
     },
     "devDependencies": {
         "@happy-dom/global-registrator": "^20.8.4",
