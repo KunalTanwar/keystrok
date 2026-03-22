@@ -1,0 +1,37 @@
+{
+    "name": "keystrok",
+    "version": "0.1.0",
+    "description": "A modern, TypeScript-native keyboard shortcut library that works for everyone — including international keyboard layouts.",
+    "keywords": [
+        "keyboard",
+        "shortcut",
+        "keybinding",
+        "hotkey",
+        "typescript"
+    ],
+    "license": "MIT",
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "src"
+    ],
+    "scripts": {
+        "build": "bun build ./src/index.ts --outdir ./dist --target browser && tsc --emitDeclarationOnly --declaration --outDir ./dist",
+        "test": "bun test",
+        "typecheck": "tsc --noEmit",
+        "typecheck:dev": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "@happy-dom/global-registrator": "^20.8.4",
+        "bun-types": "latest",
+        "typescript": "^5.4.0"
+    }
+}

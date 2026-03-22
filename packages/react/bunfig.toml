@@ -1,0 +1,8 @@
+[test]
+preload = ["./happydom.ts"]
+
+[install]
+exact = true
+
+[resolver]
+paths = { "keystrok" = ["../core/src/index.ts"] }

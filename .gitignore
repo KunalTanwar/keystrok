@@ -1,0 +1,35 @@
+# dependencies
+node_modules/
+
+# build outputs
+dist/
+
+# bun
+bun.lockb
+*.bun
+
+# environment
+.env
+.env.local
+.env.*.local
+
+# editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# os
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+npm-debug.log*
+bun-debug.log*
+
+# typescript
+*.tsbuildinfo

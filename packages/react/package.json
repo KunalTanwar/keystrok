@@ -1,0 +1,50 @@
+{
+    "name": "keystrok-react",
+    "version": "0.1.0",
+    "description": "React bindings for keystrok — useKeystrok() hook and KeystrokScope component.",
+    "keywords": [
+        "keyboard",
+        "shortcut",
+        "keybinding",
+        "hotkey",
+        "react",
+        "typescript"
+    ],
+    "license": "MIT",
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "src"
+    ],
+    "scripts": {
+        "build": "bun build ./src/index.ts --outdir ./dist --target browser",
+        "test": "bun test",
+        "typecheck": "tsc --noEmit",
+        "typecheck:dev": "tsc --noEmit --project tsconfig.dev.json"
+    },
+    "peerDependencies": {
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
+    },
+    "dependencies": {
+        "keystrok": "workspace:*"
+    },
+    "devDependencies": {
+        "@happy-dom/global-registrator": "^20.8.4",
+        "@testing-library/react": "^16.3.2",
+        "@testing-library/user-event": "^14.6.1",
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
+        "bun-types": "latest",
+        "react": "^18.0.0",
+        "typescript": "^5.4.0"
+    }
+}

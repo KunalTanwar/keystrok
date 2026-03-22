@@ -1,0 +1,22 @@
+{
+    "name": "keystrok-monorepo",
+    "private": true,
+    "workspaces": [
+        "packages/*",
+        "examples/*"
+    ],
+    "scripts": {
+        "build": "bun run --filter '*' build",
+        "test": "bun test",
+        "test:watch": "bun test --watch",
+        "lint": "eslint packages/*/src --ext .ts,.tsx",
+        "typecheck": "tsc --build"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^8.57.1",
+        "@typescript-eslint/parser": "^8.57.1",
+        "bun-types": "^1.3.11",
+        "eslint": "^10.1.0",
+        "typescript": "^5.9.3"
+    }
+}

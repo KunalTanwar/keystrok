@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>keystrok — vanilla demo</title>
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: system-ui, sans-serif;
+                background: #0f0f0f;
+                color: #e5e5e5;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 48px 24px;
+                gap: 40px;
+            }
+
+            header {
+                text-align: center;
+            }
+
+            header h1 {
+                font-size: 2rem;
+                font-weight: 600;
+                letter-spacing: -0.5px;
+            }
+
+            header p {
+                margin-top: 8px;
+                color: #888;
+                font-size: 0.95rem;
+            }
+
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 16px;
+                width: 100%;
+                max-width: 900px;
+            }
+
+            .card {
+                background: #1a1a1a;
+                border: 1px solid #2a2a2a;
+                border-radius: 12px;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .card h2 {
+                font-size: 0.85rem;
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.8px;
+                color: #888;
+            }
+
+            .shortcut-list {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .shortcut-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 12px;
+                background: #111;
+                border: 1px solid #222;
+                border-radius: 8px;
+                transition: border-color 0.15s;
+            }
+
+            .shortcut-row.fired {
+                border-color: #4ade80;
+                background: #0d2414;
+            }
+
+            .shortcut-row .label {
+                font-size: 0.9rem;
+                color: #ccc;
+            }
+
+            .shortcut-row .keys {
+                display: flex;
+                gap: 4px;
+            }
+
+            kbd {
+                background: #2a2a2a;
+                border: 1px solid #3a3a3a;
+                border-bottom-width: 2px;
+                border-radius: 5px;
+                padding: 2px 7px;
+                font-size: 0.78rem;
+                font-family: monospace;
+                color: #ddd;
+            }
+
+            .log {
+                width: 100%;
+                max-width: 900px;
+                background: #1a1a1a;
+                border: 1px solid #2a2a2a;
+                border-radius: 12px;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .log h2 {
+                font-size: 0.85rem;
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.8px;
+                color: #888;
+            }
+
+            .log-entries {
+                display: flex;
+                flex-direction: column-reverse;
+                gap: 6px;
+                min-height: 80px;
+                max-height: 200px;
+                overflow-y: auto;
+            }
+
+            .log-entry {
+                font-size: 0.85rem;
+                font-family: monospace;
+                color: #4ade80;
+                opacity: 1;
+                transition: opacity 0.3s;
+            }
+
+            .log-entry .time {
+                color: #555;
+                margin-right: 8px;
+            }
+
+            .scope-controls {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            button {
+                background: #222;
+                border: 1px solid #333;
+                border-radius: 7px;
+                color: #ccc;
+                padding: 6px 14px;
+                font-size: 0.85rem;
+                cursor: pointer;
+                transition:
+                    background 0.15s,
+                    border-color 0.15s;
+            }
+
+            button:hover {
+                background: #2a2a2a;
+                border-color: #444;
+            }
+            button.active {
+                background: #1a3a1a;
+                border-color: #4ade80;
+                color: #4ade80;
+            }
+
+            .badge {
+                display: inline-block;
+                padding: 2px 8px;
+                border-radius: 999px;
+                font-size: 0.75rem;
+                background: #222;
+                border: 1px solid #333;
+                color: #888;
+            }
+
+            .badge.active {
+                background: #1a3a1a;
+                border-color: #4ade80;
+                color: #4ade80;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>keystrok</h1>
+            <p>A modern TypeScript keyboard shortcut library</p>
+        </header>
+
+        <div class="grid">
+            <!-- Basic shortcuts -->
+            <div class="card">
+                <h2>Basic shortcuts</h2>
+                <div class="shortcut-list">
+                    <div class="shortcut-row" id="row-search">
+                        <span class="label">Open search</span>
+                        <span class="keys"><kbd>Ctrl</kbd><kbd>K</kbd></span>
+                    </div>
+                    <div class="shortcut-row" id="row-save">
+                        <span class="label">Save</span>
+                        <span class="keys"><kbd>Ctrl</kbd><kbd>S</kbd></span>
+                    </div>
+                    <div class="shortcut-row" id="row-undo">
+                        <span class="label">Undo</span>
+                        <span class="keys"><kbd>Ctrl</kbd><kbd>Z</kbd></span>
+                    </div>
+                    <div class="shortcut-row" id="row-help">
+                        <span class="label">Help</span>
+                        <span class="keys"><kbd>?</kbd></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sequence shortcuts -->
+            <div class="card">
+                <h2>Sequences</h2>
+                <div class="shortcut-list">
+                    <div class="shortcut-row" id="row-goto-home">
+                        <span class="label">Go to home</span>
+                        <span class="keys"><kbd>G</kbd> then <kbd>H</kbd></span>
+                    </div>
+                    <div class="shortcut-row" id="row-goto-settings">
+                        <span class="label">Go to settings</span>
+                        <span class="keys"><kbd>G</kbd> then <kbd>S</kbd></span>
+                    </div>
+                    <div class="shortcut-row" id="row-goto-profile">
+                        <span class="label">Go to profile</span>
+                        <span class="keys"><kbd>G</kbd> then <kbd>P</kbd></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scoped shortcuts -->
+            <div class="card">
+                <h2>Scoped shortcuts</h2>
+                <div class="scope-controls">
+                    <button id="btn-editor" onclick="toggleScope('editor')">editor scope</button>
+                    <button id="btn-modal" onclick="toggleScope('modal')">modal scope</button>
+                </div>
+                <div class="shortcut-list">
+                    <div class="shortcut-row" id="row-bold">
+                        <span class="label">Bold <span class="badge" id="badge-editor">editor</span></span>
+                        <span class="keys"><kbd>Ctrl</kbd><kbd>B</kbd></span>
+                    </div>
+                    <div class="shortcut-row" id="row-close">
+                        <span class="label">Close <span class="badge" id="badge-modal">modal</span></span>
+                        <span class="keys"><kbd>Escape</kbd></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log -->
+        <div class="log">
+            <h2>Event log</h2>
+            <div class="log-entries" id="log"></div>
+        </div>
+
+        <script type="module">
+            import { createKeystrok } from "../packages/core/src/index.ts"
+
+            const ks = createKeystrok()
+            const log = document.getElementById("log")
+            const scopeStates = { editor: false, modal: false }
+
+            function addLog(message) {
+                const entry = document.createElement("div")
+
+                entry.className = "log-entry"
+
+                const time = new Date().toLocaleTimeString("en", { hour12: false })
+
+                entry.innerHTML = `<span class="time">${time}</span>${message}`
+
+                log.prepend(entry)
+            }
+
+            function flash(id) {
+                const row = document.getElementById(id)
+
+                if (!row) return
+
+                row.classList.add("fired")
+
+                setTimeout(() => row.classList.remove("fired"), 400)
+            }
+
+            // basic shortcuts
+            ks.bind("ctrl+k", () => {
+                flash("row-search")
+                addLog("Open search")
+            })
+            ks.bind("ctrl+s", (e) => {
+                e.preventDefault()
+                flash("row-save")
+                addLog("Save")
+            })
+            ks.bind("ctrl+z", () => {
+                flash("row-undo")
+                addLog("Undo")
+            })
+            ks.bind("?", () => {
+                flash("row-help")
+                addLog("Help")
+            })
+
+            // sequences
+            ks.bind(["g", "h"], () => {
+                flash("row-goto-home")
+                addLog("Go to home")
+            })
+            ks.bind(["g", "s"], () => {
+                flash("row-goto-settings")
+                addLog("Go to settings")
+            })
+            ks.bind(["g", "p"], () => {
+                flash("row-goto-profile")
+                addLog("Go to profile")
+            })
+
+            // scoped shortcuts
+            ks.bind(
+                "ctrl+b",
+                () => {
+                    flash("row-bold")
+                    addLog("Bold (editor scope)")
+                },
+                { scope: "editor" },
+            )
+            ks.bind(
+                "escape",
+                () => {
+                    flash("row-close")
+                    addLog("Close (modal scope)")
+                },
+                { scope: "modal" },
+            )
+
+            // scope toggle
+            window.toggleScope = function (name) {
+                scopeStates[name] = !scopeStates[name]
+                const btn = document.getElementById(`btn-${name}`)
+                const badge = document.getElementById(`badge-${name}`)
+
+                if (scopeStates[name]) {
+                    ks.scope(name).activate()
+
+                    btn.classList.add("active")
+                    badge.classList.add("active")
+
+                    addLog(`Scope "${name}" activated`)
+                } else {
+                    ks.scope(name).deactivate()
+
+                    btn.classList.remove("active")
+                    badge.classList.remove("active")
+
+                    addLog(`Scope "${name}" deactivated`)
+                }
+            }
+
+            addLog("keystrok ready — try a shortcut!")
+        </script>
+    </body>
+</html>
